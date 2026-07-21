@@ -1,0 +1,12 @@
+--Transform=InitEntropy
+    --Functions=obf_INIT_PLACEHOLDER_obf
+--Transform=InitOpaque
+    --Functions=obf_INIT_PLACEHOLDER_obf
+    --InitOpaqueStructs=array,env,list
+--Transform=AntiAliasAnalysis
+    --Functions=obf_ASSET_PLACEHOLDER_obf
+--Transform=InitImplicitFlow
+    --Functions=obf_INIT_PLACEHOLDER_obf
+--Transform=AntiTaintAnalysis
+    --Functions=obf_ASSET_PLACEHOLDER_obf
+    --AntiTaintAnalysisKinds=sysCalls

@@ -1,0 +1,11 @@
+--Transform=InitBranchFuns
+    --Functions=obf_INIT_PLACEHOLDER_obf
+--Transform=InitOpaque
+    --Functions=obf_INIT_PLACEHOLDER_obf
+    --InitOpaqueStructs=env
+--Transform=InitEntropy
+    --Functions=obf_INIT_PLACEHOLDER_obf
+--Transform=AntiBranchAnalysis
+    --Functions=obf_ASSET_PLACEHOLDER_obf
+    --AntiBranchAnalysisKinds=goto2push
+    --AntiBranchAnalysisOpaqueStructs=env

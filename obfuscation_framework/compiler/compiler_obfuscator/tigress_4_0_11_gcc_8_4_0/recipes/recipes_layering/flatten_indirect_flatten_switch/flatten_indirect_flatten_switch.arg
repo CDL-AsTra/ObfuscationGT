@@ -1,0 +1,6 @@
+--Transform=Flatten
+    --Functions=obf_ASSET_PLACEHOLDER_obf
+    --FlattenDispatch=indirect
+--Transform=Flatten
+    --Functions=obf_ASSET_PLACEHOLDER_obf
+    --FlattenDispatch=switch

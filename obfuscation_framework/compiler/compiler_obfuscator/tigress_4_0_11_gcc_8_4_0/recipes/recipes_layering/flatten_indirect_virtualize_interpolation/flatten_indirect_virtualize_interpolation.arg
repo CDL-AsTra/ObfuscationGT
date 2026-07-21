@@ -1,0 +1,6 @@
+--Transform=Flatten
+    --Functions=obf_ASSET_PLACEHOLDER_obf
+    --FlattenDispatch=indirect
+--Transform=Virtualize
+    --VirtualizeDispatch=interpolation
+    --Functions=obf_ASSET_PLACEHOLDER_obf

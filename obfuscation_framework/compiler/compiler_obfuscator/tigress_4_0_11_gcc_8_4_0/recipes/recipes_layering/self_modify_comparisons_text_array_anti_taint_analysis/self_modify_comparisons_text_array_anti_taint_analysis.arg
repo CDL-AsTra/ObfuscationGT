@@ -1,0 +1,13 @@
+--Transform=InitEntropy
+    --Functions=obf_INIT_PLACEHOLDER_obf
+--Transform=InitOpaque
+    --Functions=obf_INIT_PLACEHOLDER_obf
+    --InitOpaqueStructs=array
+--Transform=SelfModify
+    --Functions=obf_ASSET_PLACEHOLDER_obf
+    --SelfModifyKinds=comparisons
+    --SelfModifyStyle=text
+--Transform=InitImplicitFlow
+    --Functions=obf_INIT_PLACEHOLDER_obf
+--Transform=AntiTaintAnalysis
+    --Functions=obf_ASSET_PLACEHOLDER_obf

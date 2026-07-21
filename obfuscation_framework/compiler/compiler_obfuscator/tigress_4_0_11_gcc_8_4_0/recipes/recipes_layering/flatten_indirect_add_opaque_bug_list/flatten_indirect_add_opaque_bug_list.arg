@@ -1,0 +1,12 @@
+--Transform=Flatten
+    --Functions=obf_ASSET_PLACEHOLDER_obf
+    --FlattenDispatch=indirect
+--Transform=InitOpaque
+    --Functions=obf_INIT_PLACEHOLDER_obf
+    --InitOpaqueStructs=list
+--Transform=InitEntropy
+    --Functions=obf_INIT_PLACEHOLDER_obf
+--Transform=AddOpaque
+    --Functions=obf_ASSET_PLACEHOLDER_obf
+    --AddOpaqueKinds=bug
+    --AddOpaqueStructs=list

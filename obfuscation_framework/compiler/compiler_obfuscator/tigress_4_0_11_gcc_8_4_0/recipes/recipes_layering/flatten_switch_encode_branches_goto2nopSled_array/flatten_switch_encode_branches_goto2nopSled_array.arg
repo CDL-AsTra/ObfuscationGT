@@ -1,0 +1,14 @@
+--Transform=Flatten
+    --Functions=obf_ASSET_PLACEHOLDER_obf
+    --FlattenDispatch=switch
+--Transform=InitOpaque
+    --Functions=obf_INIT_PLACEHOLDER_obf
+    --InitOpaqueStructs=array
+--Transform=InitBranchFuns
+    --Functions=obf_INIT_PLACEHOLDER_obf
+--Transform=InitEntropy
+    --Functions=obf_INIT_PLACEHOLDER_obf
+--Transform=AntiBranchAnalysis
+    --Functions=obf_ASSET_PLACEHOLDER_obf
+    --AntiBranchAnalysisKinds=goto2nopSled
+    --AntiBranchAnalysisOpaqueStructs=array

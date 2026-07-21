@@ -1,0 +1,11 @@
+--Transform=InitEntropy
+    --Functions=obf_INIT_PLACEHOLDER_obf
+--Transform=InitOpaque
+    --Functions=obf_INIT_PLACEHOLDER_obf
+    --InitOpaqueStructs=array,env,list
+--Transform=SelfModify
+    --Functions=obf_ASSET_PLACEHOLDER_obf
+    --SelfModifyKinds=arithmetic
+    --SelfModifyStyle=stack
+--Transform=AntiAliasAnalysis
+    --Functions=obf_ASSET_PLACEHOLDER_obf

@@ -1,0 +1,9 @@
+--Transform=Flatten
+    --Functions=obf_ASSET_PLACEHOLDER_obf
+    --FlattenDispatch=indirect
+--Transform=InitEntropy
+    --Functions=obf_INIT_PLACEHOLDER_obf
+--Transform=InitImplicitFlow
+    --Functions=obf_INIT_PLACEHOLDER_obf
+--Transform=AntiTaintAnalysis
+    --Functions=obf_ASSET_PLACEHOLDER_obf

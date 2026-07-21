@@ -1,0 +1,118 @@
+#!/bin/python
+"""Helper module of obf.
+    Contains helpful function to e.g., only get enabled stuff.
+"""
+import os
+import queue
+import threading
+import logging
+from pathlib import Path
+import yaml
+import docker
+from tqdm import tqdm
+from obf_modules.obfcontainer import obfcontainer
+
+
+def get_enabled_directories(startpath: Path, directory: str, only_enabled: bool = True) -> set[Path]:
+    """Check if the sample sources have all the necessary files.
+    """
+    dirs: set[Path] = set()
+    path: Path = Path(startpath).joinpath(directory)
+    if only_enabled:
+        with open(os.path.join(path, "enabled."+directory+".yaml"), "r", encoding="utf-8") as f:
+            config = yaml.safe_load(f)
+            if config["enabled"]:
+                dirs = [path.joinpath(Path(f)) for f in config["enabled"]]
+    else:
+        # If we want all (not only the enabled) then lets search for all directories
+        dirs = [f for f in path.iterdir() if f.is_dir()]
+
+    # Search for paths that are on the category level: src/src_*
+    new_dirs: set[Path] = set()
+    for d in dirs:
+        if d.name.startswith("_"):
+            continue
+        if len(d.relative_to(path).parts) == 1:
+            new_dirs.update(set(Path(f) for f in d.iterdir() if f.is_dir() and not f.name.startswith("_")))
+        else:
+            new_dirs.add(d)
+    dirs = new_dirs
+
+    return dirs
+
+
+def _wait_for_container_to_finish(running_container: obfcontainer, flag_queue: queue.Queue):
+    try:
+        running_container.wait_until_done()
+    except Exception as e:
+        logging.error(f"Container {running_container} crashed or timed out: {e}")
+        running_container.error_message = str(e)
+    finally:
+        flag_queue.put(running_container)
+
+
+def _wait_for_any_container_to_finish(finished_containers_queue: queue.Queue):
+    return finished_containers_queue.get()
+
+
+def _remove_container(running_containers: list[obfcontainer], container) -> list[obfcontainer]:
+    logfilename = container.result_dir.joinpath(f"{container.sample_name}.log")
+    with open(logfilename, "w", encoding="utf-8") as logfile:
+        logfile.write(str(container.logs()).replace("\\n", "\n"))
+        if container.error_message:
+            logfile.write(f"\n\nContainer had an error: {container.error_message}\n")
+    try:
+        logging.debug(f"Removing container: {container}")
+        container.remove_container()
+    except Exception as e:
+        logging.error(f"Failed to remove container {container.containername}: {e}")
+        with open(logfilename, "a", encoding="utf-8") as logfile:
+            logfile.write(f"\n\nFailed to remove container {container.containername}: {e}\n")
+    running_containers.remove(container)
+    return running_containers
+
+
+def run_containers_in_batches(containerlist: list[obfcontainer], docker_client: docker.client, number_of_concurrent_containers: int):
+    """Run obfcontainers in batches.
+    """
+    running_containers = []
+    finished_containers_queue = queue.Queue()
+    # Use tqdm to visualize how many containers have already been started
+    for container in tqdm(containerlist, desc="Containers started"):
+        # Start x containers at once
+        logging.debug(f"Starting container: {container}")
+        try:
+            container.run(docker_client)
+        except Exception as e:
+            logging.error(f"Container {container.containername} failed to start: {e}")
+            continue  # Skip to next container
+        running_containers.append(container)
+        container_thread = threading.Thread(target=_wait_for_container_to_finish, args=(container, finished_containers_queue))
+        container_thread.daemon = True
+        container_thread.start()
+        # If we have more than x containers wait for one to finish before we continue
+        if len(running_containers) >= number_of_concurrent_containers:
+            finished_container = _wait_for_any_container_to_finish(finished_containers_queue)
+            running_containers = _remove_container(running_containers, finished_container)
+
+    containers_left = len(running_containers)
+    logging.info(f"Waiting for the final {containers_left} containers to stop.")
+    # Wait for the final containers to finish
+    pbar = tqdm(total=containers_left, desc="Waiting for containers to finish")
+    while len(running_containers) > 0:
+        pbar.n = len(running_containers)
+        pbar.refresh()
+        finished_container = _wait_for_any_container_to_finish(finished_containers_queue)
+        running_containers = _remove_container(running_containers, finished_container)
+    pbar.n = containers_left
+    pbar.refresh()
+
+
+def list_containers_and_prompt(containers: obfcontainer):
+    """Lists the containers and asks if the user wants to continue."""
+    for container in containers:
+        print(container)
+    user_input = input("Want to continue? Y/y -> Yes, Other -> No:")
+    if len(user_input) >= 1 and user_input[0].lower() == "y":
+        return True
+    return False

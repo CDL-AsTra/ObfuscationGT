@@ -1,0 +1,15 @@
+--Transform=InitEntropy
+    --Functions=obf_INIT_PLACEHOLDER_obf
+--Transform=InitOpaque
+    --Functions=obf_INIT_PLACEHOLDER_obf
+    --InitOpaqueStructs=array
+--Transform=SelfModify
+    --Functions=obf_ASSET_PLACEHOLDER_obf
+    --SelfModifyKinds=comparisons
+    --SelfModifyStyle=text
+--Transform=InitBranchFuns
+    --Functions=obf_INIT_PLACEHOLDER_obf
+--Transform=AntiBranchAnalysis
+    --Functions=obf_ASSET_PLACEHOLDER_obf
+    --AntiBranchAnalysisKinds=goto2nopSled
+    --AntiBranchAnalysisOpaqueStructs=array

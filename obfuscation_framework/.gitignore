@@ -1,0 +1,11 @@
+*~
+*.swp
+*.swo
+*.zip
+__pycache__
+out/
+.idea
+addons/api_llm
+do_not_commit/
+obf.log*
+/addons/tigress_merger/merged_output/

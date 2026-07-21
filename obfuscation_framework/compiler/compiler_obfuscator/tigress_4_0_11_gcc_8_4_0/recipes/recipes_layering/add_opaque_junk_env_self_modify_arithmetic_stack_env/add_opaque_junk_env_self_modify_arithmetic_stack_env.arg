@@ -1,0 +1,13 @@
+--Transform=InitEntropy
+    --Functions=obf_INIT_PLACEHOLDER_obf
+--Transform=InitOpaque
+    --Functions=obf_INIT_PLACEHOLDER_obf
+    --InitOpaqueStructs=env
+--Transform=AddOpaque
+    --Functions=obf_ASSET_PLACEHOLDER_obf
+    --AddOpaqueKinds=junk
+    --AddOpaqueStructs=env
+--Transform=SelfModify
+    --Functions=obf_ASSET_PLACEHOLDER_obf
+    --SelfModifyKinds=arithmetic
+    --SelfModifyStyle=stack

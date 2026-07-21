@@ -1,0 +1,10 @@
+--Transform=InitEntropy
+    --Functions=obf_INIT_PLACEHOLDER_obf
+--Transform=InitImplicitFlow
+    --Functions=obf_INIT_PLACEHOLDER_obf
+--Transform=AntiTaintAnalysis
+    --Functions=obf_ASSET_PLACEHOLDER_obf
+    --AntiTaintAnalysisKinds=sysCalls
+--Transform=Virtualize
+    --VirtualizeDispatch=direct
+    --Functions=obf_ASSET_PLACEHOLDER_obf

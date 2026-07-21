@@ -1,0 +1,6 @@
+--Transform=Virtualize
+    --VirtualizeDispatch=interpolation
+    --Functions=obf_ASSET_PLACEHOLDER_obf
+--Transform=Virtualize
+    --VirtualizeDispatch=direct
+    --Functions=obf_ASSET_PLACEHOLDER_obf

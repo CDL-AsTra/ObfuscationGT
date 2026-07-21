@@ -1,0 +1,14 @@
+--Transform=InitBranchFuns
+    --Functions=obf_INIT_PLACEHOLDER_obf
+--Transform=InitOpaque
+    --Functions=obf_INIT_PLACEHOLDER_obf
+    --InitOpaqueStructs=array
+--Transform=InitEntropy
+    --Functions=obf_INIT_PLACEHOLDER_obf
+--Transform=AntiBranchAnalysis
+    --Functions=obf_ASSET_PLACEHOLDER_obf
+    --AntiBranchAnalysisKinds=branchFuns
+    --AntiBranchAnalysisOpaqueStructs=array
+--Transform=Virtualize
+    --VirtualizeDispatch=interpolation
+    --Functions=obf_ASSET_PLACEHOLDER_obf

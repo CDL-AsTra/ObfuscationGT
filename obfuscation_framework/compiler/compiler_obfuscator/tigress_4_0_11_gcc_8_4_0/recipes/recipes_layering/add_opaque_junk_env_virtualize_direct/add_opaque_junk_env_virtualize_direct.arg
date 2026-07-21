@@ -1,0 +1,12 @@
+--Transform=InitEntropy
+    --Functions=obf_INIT_PLACEHOLDER_obf
+--Transform=InitOpaque
+    --Functions=obf_INIT_PLACEHOLDER_obf
+    --InitOpaqueStructs=env
+--Transform=AddOpaque
+    --Functions=obf_ASSET_PLACEHOLDER_obf
+    --AddOpaqueKinds=junk
+    --AddOpaqueStructs=env
+--Transform=Virtualize
+    --VirtualizeDispatch=direct
+    --Functions=obf_ASSET_PLACEHOLDER_obf

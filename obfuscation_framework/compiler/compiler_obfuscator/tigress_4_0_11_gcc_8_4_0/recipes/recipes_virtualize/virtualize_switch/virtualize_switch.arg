@@ -1,0 +1,3 @@
+--Transform=Virtualize
+    --VirtualizeDispatch=switch
+    --Functions=obf_ASSET_PLACEHOLDER_obf
